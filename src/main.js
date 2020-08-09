@@ -3,6 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 
+import VuePaginate from 'vue-paginate';
+Vue.use(VuePaginate);
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
