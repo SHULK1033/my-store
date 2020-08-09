@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand" href="#">My Store</a>
     <button
       class="navbar-toggler"
@@ -20,7 +20,7 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a href class="btn btn-secondary text-white">
+          <a href="#" class="btn btn-secondary text-white">
             <i class="fas fa-shopping-cart"></i> 0
           </a>
         </li>

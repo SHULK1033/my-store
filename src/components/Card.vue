@@ -35,6 +35,9 @@
             </a>
           </li>
           <li class="page-item">
+            <a class="page-link" href="#">{{ page }}</a>
+          </li>
+          <li class="page-item">
             <a
               class="page-link"
               href="#"
@@ -55,7 +58,7 @@
 export default {
   data() {
     return {
-      showResults: 8,
+      showResults: 9,
       page: 1,
       methods: {
         formatPrice(value) {
