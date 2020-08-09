@@ -1,7 +1,7 @@
 <template>
   <div class="row no-gutters mt-4">
     <div
-      class="col-md-3 my-3 d-flex justify-content-center"
+      class="col-md-3 my-2 d-flex justify-content-center"
       v-for="product in products"
       :key="product.id"
     >
@@ -24,10 +24,22 @@
 export default {
   data() {
     return {
+      page: 1,
+      perPage: 2,
+      pages: [],
       methods: {
         formatPrice(value) {
           let val = (value / 1).toFixed(2).replace(".", ",");
           return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        },
+        paginate(products) {
+          let page = this.page;
+          let perPage = this.perPage;
+
+          let from = page * perPage - perPage;
+          let to = page * perPage;
+
+          return products.slice(from, to);
         },
       },
       products: [
@@ -601,6 +613,12 @@ export default {
           rating: 3,
         },
       ],
+      computed: {
+        displayProducts() {
+          console.log(this.products);
+          return this.products;
+        },
+      },
     };
   },
 };
