@@ -1,11 +1,13 @@
 <template>
   <div class="row no-gutters mt-4">
     <div
-      class="col-md-3 my-2 d-flex justify-content-center"
-      v-for="product in products"
+      style="display: flex"
+      class="col-md-3 my-2"
+      v-for="(product, index) in products"
+      v-show="(page - 1) * showResults <= index && page * showResults > index"
       :key="product.id"
     >
-      <div class="card" style="width: 18rem;">
+      <div class="card mx-auto" style="width: 18rem;">
         <img v-bind:src="product.image" class="card-img" v-bind:alt="'img ' + product.title" />
         <div class="card-body">
           <h5 class="card-title">{{ product.title }}</h5>
@@ -17,6 +19,35 @@
         </div>
       </div>
     </div>
+
+    <div class="row no-gutters d-flex justify-content-center">
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="#"
+              aria-label="Previous"
+              v-show="page != 1"
+              @click.prevent="page -= 1"
+            >
+              <span aria-hidden="true">Anterior</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="#"
+              aria-label="Next"
+              v-show="page * showResults / products.length < 1"
+              @click.prevent="page +=1"
+            >
+              <span aria-hidden="true">Siguiente</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </template>
 
@@ -24,6 +55,8 @@
 export default {
   data() {
     return {
+      showResults: 8,
+      page: 1,
       methods: {
         formatPrice(value) {
           let val = (value / 1).toFixed(2).replace(".", ",");
