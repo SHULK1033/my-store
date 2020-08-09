@@ -1,18 +1,19 @@
 <template>
-  <div class="row no-gutters mt-5">
+  <div class="row no-gutters mt-4">
     <div
-      class="col-md-3 p-2 d-flex justify-content-center"
+      class="col-md-3 my-3 d-flex justify-content-center"
       v-for="product in products"
       :key="product.id"
     >
       <div class="card" style="width: 18rem;">
-        <img v-bind:src="product.image" class="card-img-top" v-bind:alt="'img ' + product.title" />
+        <img v-bind:src="product.image" class="card-img" v-bind:alt="'img ' + product.title" />
         <div class="card-body">
           <h5 class="card-title">{{ product.title }}</h5>
           <p class="card-text">{{ product.description }}</p>
-          <hr>
-          <button href="#" class="btn btn-primary d-flex align-items-end">buy</button>
-          ${{ product.price }}
+        </div>
+        <div class="card-footer d-flex align-items-center justify-content-between">
+          <button class="btn btn-primary">add cart</button>
+          <span>${{ methods.formatPrice(product.price) }}</span>
         </div>
       </div>
     </div>
@@ -23,6 +24,12 @@
 export default {
   data() {
     return {
+      methods: {
+        formatPrice(value) {
+          let val = (value / 1).toFixed(2).replace(".", ",");
+          return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        },
+      },
       products: [
         {
           id: "0",
