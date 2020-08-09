@@ -1,55 +1,54 @@
 <template>
-  <div class="row no-gutters mt-4">
-    <div
-      style="display: flex"
-      class="col-md-3 my-2"
-      v-for="(product, index) in products"
-      v-show="(page - 1) * showResults <= index && page * showResults > index"
-      :key="product.id"
-    >
-      <div class="card mx-auto" style="width: 18rem;">
-        <img v-bind:src="product.image" class="card-img" v-bind:alt="'img ' + product.title" />
-        <div class="card-body">
-          <h5 class="card-title">{{ product.title }}</h5>
-          <p class="card-text">{{ product.description }}</p>
-        </div>
-        <div class="card-footer d-flex align-items-center justify-content-between">
-          <button class="btn btn-primary">add cart</button>
-          <span>${{ methods.formatPrice(product.price) }}</span>
+  <div>
+    <div class="row no-gutters mt-4">
+      <div
+        style="display: flex"
+        class="col-md-3 my-2"
+        v-for="product in paginate"
+        :key="product.id"
+      >
+        <div class="card mx-auto" style="width: 18rem;">
+          <img v-bind:src="product.image" class="card-img" v-bind:alt="'img ' + product.title" />
+          <div class="card-body">
+            <h5 class="card-title">{{ product.title }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+          </div>
+          <div class="card-footer d-flex align-items-center justify-content-between">
+            <button class="btn btn-primary">add cart</button>
+            <span>${{ formatPrice(product.price) }}</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row no-gutters d-flex justify-content-center">
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li class="page-item">
-            <a
-              class="page-link"
-              href="#"
-              aria-label="Previous"
-              v-show="page != 1"
-              @click.prevent="page -= 1"
-            >
-              <span aria-hidden="true">Anterior</span>
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#">{{ page }}</a>
-          </li>
-          <li class="page-item">
-            <a
-              class="page-link"
-              href="#"
-              aria-label="Next"
-              v-show="page * showResults / products.length < 1"
-              @click.prevent="page +=1"
-            >
-              <span aria-hidden="true">Siguiente</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+    <div class="row no-gutters">
+      <div class="btn-group col-md-1 offset-md-6 my-3">
+        <button
+          type="button"
+          v-if="page != 1"
+          @click="page--"
+          class="btn btn-sm btn-outline-primary"
+        >
+          <i class="fas fa-backward"></i>
+        </button>
+
+        <button
+          type="button"
+          @click="page = pageNumber"
+          class="btn btn-sm btn-outline-primary"
+          v-for="pageNumber in pages.slice(page - 1, page + 5)"
+          :key="pageNumber"
+        >{{ pageNumber }}</button>
+
+        <button
+          type="button"
+          v-if="page < pages.length"
+          @click="page++"
+          class="btn btn-sm btn-outline-primary"
+        >
+          <i class="fas fa-forward"></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -58,14 +57,9 @@
 export default {
   data() {
     return {
-      showResults: 9,
       page: 1,
-      methods: {
-        formatPrice(value) {
-          let val = (value / 1).toFixed(2).replace(".", ",");
-          return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        },
-      },
+      perPage: 8,
+      pages: [],
       products: [
         {
           id: "0",
@@ -638,6 +632,35 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    formatPrice(value) {
+      let val = (value / 1).toFixed(2).replace(".", ",");
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
+    setPages() {
+      let numerPages = Math.ceil(this.products.length / this.perPage);
+      for (let i = 1; i <= numerPages.length; i++) {
+        this.pages.push(i);
+      }
+    },
+  },
+  computed: {
+    paginate() {
+      let page = this.page;
+      let perPage = this.perPage;
+
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+
+      return this.products.slice(from, to);
+    },
+  },
+  watch: {
+    pages() {
+      console.log("dvgdtvd");
+      this.setPages();
+    },
   },
 };
 </script>
