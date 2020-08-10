@@ -4,10 +4,10 @@
       <div
         style="display: flex"
         class="col-md-3 my-2"
-        v-for="product in paginate"
+        v-for="product in displayProducts"
         :key="product.id"
       >
-        <div class="card mx-auto" style="width: 18rem;">
+        <div class="card mx-auto" style="width: 20rem;">
           <img v-bind:src="product.image" class="card-img" v-bind:alt="'img ' + product.title" />
           <div class="card-body">
             <h5 class="card-title">{{ product.title }}</h5>
@@ -22,31 +22,24 @@
     </div>
 
     <div class="row no-gutters">
-      <div class="btn-group col-md-1 offset-md-6 my-3">
-        <button
-          type="button"
-          v-if="page != 1"
-          @click="page--"
-          class="btn btn-sm btn-outline-primary"
-        >
-          <i class="fas fa-backward"></i>
+      <div class="btn-group col-md-2 mx-auto">
+        <button v-if="page != 1" type="button" @click="page--" class="btn btn-outline-primary">
+          <i class="fas fa-forward"></i>
         </button>
-
         <button
           type="button"
-          @click="page = pageNumber"
-          class="btn btn-sm btn-outline-primary"
           v-for="pageNumber in pages.slice(page - 1, page + 5)"
           :key="pageNumber"
+          @click="page = pageNumber"
+          class="btn btn-outline-primary"
         >{{ pageNumber }}</button>
-
         <button
-          type="button"
           v-if="page < pages.length"
+          type="button"
           @click="page++"
-          class="btn btn-sm btn-outline-primary"
+          class="btn btn-outline-primary"
         >
-          <i class="fas fa-forward"></i>
+          <i class="fas fa-backward"></i>
         </button>
       </div>
     </div>
@@ -633,33 +626,40 @@ export default {
       ],
     };
   },
+  created() {
+    // this.setProducts();
+  },
+
   methods: {
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
-    setPages() {
-      let numerPages = Math.ceil(this.products.length / this.perPage);
-      for (let i = 1; i <= numerPages.length; i++) {
-        this.pages.push(i);
-      }
-    },
-  },
-  computed: {
-    paginate() {
+    paginate(products) {
       let page = this.page;
       let perPage = this.perPage;
 
       let from = page * perPage - perPage;
       let to = page * perPage;
 
-      return this.products.slice(from, to);
+      return products.slice(from, to);
+    },
+    setProducts() {
+      let numberOfPages = Math.ceil(this.products.length / this.perPage);
+      for (let i = 1; i <= numberOfPages; i++) {
+        console.log(i);
+        this.pages.push(i);
+      }
+    },
+  },
+  computed: {
+    displayProducts() {
+      return this.paginate(this.products);
     },
   },
   watch: {
-    pages() {
-      console.log("dvgdtvd");
-      this.setPages();
+    numberPages() {
+      this.setProducts();
     },
   },
 };
