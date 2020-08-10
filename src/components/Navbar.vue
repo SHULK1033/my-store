@@ -21,7 +21,8 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a href="#" class="btn btn-secondary text-white">
-            <i class="fas fa-shopping-cart"></i> 0
+            <i class="fas fa-shopping-cart"></i>
+            {{ cart }}
           </a>
         </li>
       </ul>
@@ -45,6 +46,7 @@ export default {
       ],
     };
   },
+  props: ["cart"],
 };
 </script>
 

@@ -14,7 +14,7 @@
             <p class="card-text">{{ product.description }}</p>
           </div>
           <div class="card-footer d-flex align-items-center justify-content-between">
-            <button class="btn btn-primary">add cart</button>
+            <button class="btn btn-primary" type="button">add cart</button>
             <span>${{ formatPrice(product.price) }}</span>
           </div>
         </div>
@@ -648,11 +648,13 @@ export default {
       }
     },
   },
+
   watch: {
     numberPages() {
       this.setProducts();
     },
   },
+
   computed: {
     displayProducts() {
       return this.paginate(this.products);

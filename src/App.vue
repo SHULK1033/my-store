@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar :cart="products.length" />
     <Card />
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   components: {
     Navbar,
     Card,
+  },
+  data() {
+    return {
+      products: [],
+    };
   },
 };
 </script>
