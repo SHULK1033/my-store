@@ -21,14 +21,14 @@
       </div>
     </div>
 
-    <div class="row no-gutters">
+    <div class="row no-gutters my-3">
       <div class="btn-group col-md-2 mx-auto">
         <button v-if="page != 1" type="button" @click="page--" class="btn btn-outline-primary">
-          <i class="fas fa-forward"></i>
+          <i class="fas fa-backward"></i>
         </button>
         <button
           type="button"
-          v-for="pageNumber in pages.slice(page - 1, page + 5)"
+          v-for="pageNumber in pages"
           :key="pageNumber"
           @click="page = pageNumber"
           class="btn btn-outline-primary"
@@ -39,7 +39,7 @@
           @click="page++"
           class="btn btn-outline-primary"
         >
-          <i class="fas fa-backward"></i>
+          <i class="fas fa-forward"></i>
         </button>
       </div>
     </div>
@@ -626,9 +626,6 @@ export default {
       ],
     };
   },
-  created() {
-    // this.setProducts();
-  },
 
   methods: {
     formatPrice(value) {
@@ -647,19 +644,18 @@ export default {
     setProducts() {
       let numberOfPages = Math.ceil(this.products.length / this.perPage);
       for (let i = 1; i <= numberOfPages; i++) {
-        console.log(i);
         this.pages.push(i);
       }
-    },
-  },
-  computed: {
-    displayProducts() {
-      return this.paginate(this.products);
     },
   },
   watch: {
     numberPages() {
       this.setProducts();
+    },
+  },
+  computed: {
+    displayProducts() {
+      return this.paginate(this.products);
     },
   },
 };
