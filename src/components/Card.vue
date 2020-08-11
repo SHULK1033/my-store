@@ -14,7 +14,7 @@
             <p class="card-text">{{ product.description }}</p>
           </div>
           <div class="card-footer d-flex align-items-center justify-content-between">
-            <button class="btn btn-primary" type="button">add cart</button>
+            <button class="btn btn-primary" type="button" @click="addCart(product)">add cart</button>
             <span>${{ formatPrice(product.price) }}</span>
           </div>
         </div>
@@ -50,8 +50,11 @@
 export default {
   data() {
     return {
+      //pagina actual
       page: 1,
+      // items por pagina
       perPage: 8,
+      // arreglo inicializado
       pages: [],
       products: [
         {
@@ -628,10 +631,12 @@ export default {
   },
 
   methods: {
+    // da formato al precio
     formatPrice(value) {
       let val = (value / 1).toFixed(2).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
+    // calcula la cantidad de paginas requeridas segun la cantidad de datos totales y la cantidad que se mostrara en pantalla
     paginate(products) {
       let page = this.page;
       let perPage = this.perPage;
@@ -641,24 +646,27 @@ export default {
 
       return products.slice(from, to);
     },
+    // paginacion de productos
     setProducts() {
       let numberOfPages = Math.ceil(this.products.length / this.perPage);
       for (let i = 1; i <= numberOfPages; i++) {
         this.pages.push(i);
       }
     },
-  },
-
-  watch: {
-    numberPages() {
-      this.setProducts();
+    // envia el objeto al componente padre
+    addCart(product) {
+      this.$emit("product", product);
     },
   },
-
+  // computar objetos para monipulacion
   computed: {
     displayProducts() {
       return this.paginate(this.products);
     },
+  },
+  // implementacion de paginacion
+  created() {
+    this.setProducts();
   },
 };
 </script>

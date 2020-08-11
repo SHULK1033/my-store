@@ -20,10 +20,15 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a href="#" class="btn btn-secondary text-white">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-toggle="modal"
+            data-target="#exampleModalCenter"
+          >
             <i class="fas fa-shopping-cart"></i>
             {{ cart }}
-          </a>
+          </button>
         </li>
       </ul>
     </div>
@@ -34,6 +39,7 @@
 export default {
   data() {
     return {
+      // items de la barra de navegacion
       items: [
         {
           route: "/",
@@ -46,6 +52,7 @@ export default {
       ],
     };
   },
+  // propiedades que vienen desde el comoponente padre
   props: ["cart"],
 };
 </script>
